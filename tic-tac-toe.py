@@ -25,32 +25,57 @@ def letter_allocation():
             print('Wrong letter!')
     return {"player 1": chosen}
 
-#User input
+#Players input
 
-chosen_letter = letter_allocation()
-
-def player1_input():
-    player1 = 1
+def player1_input(letter):
+    player1 = letter['player 1']
     player1_index = 10
-    chosen = chosen_letter
     while player1_index not in range(0, 9):
         player1_index = int(input('player 1 please pick a slot on the board between 0-8: '))
         if player1_index not in range(0, 9):
             print('Please enter a valid number')
 
-    return [player1_index, player1]
+    player = [player1_index, player1]
+    update_board_player1(player, letter)
 
-def player2_input():
+def player2_input(letter):
     player2 = 2
+    if letter['player 1'] == 'X':
+        player2 = 'O'
+    elif letter['player 1'] == 'O':
+        player2 = 'X'
     player2_index = 20
-    chosen = chosen_letter
     while player2_index not in range(0, 9):
         player2_index = int(input('player 2 please pick a slot on the board between 0-8: '))
         if player2_index not in range(0, 9):
             print('Please enter a valid number')
 
-    return [player2_index, player2]
+    player = [player2_index, player2]
+    update_board_player2(player, letter)
 
+#Players update
+def update_board_player1(player, letter):
+    if board[player[0]] == '':
+        board[player[0]] = player[1]
+    elif '' in board:
+        player1_input(letter)
+    else:
+        display_board(board)
 
-player1_input()
-player2_input()
+def update_board_player2(player, letter):
+    if board[player[0]] == '':
+        board[player[0]] = player[1]
+    elif '' in board:
+        player2_input(letter)
+    else:
+        display_board(board)
+
+def play_the_game():
+    display_board(board)
+    player1_letter = letter_allocation()
+    while '' in board:
+        player1_input(player1_letter)
+        player2_input(player1_letter)
+        display_board(board)
+
+play_the_game()
